@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ClassRosterDaoFileImpl implements ClassRosterDao{
-    private Map<String, Student> studentList = new HashMap<>();
+    private Map<String, Student> students = new HashMap<>();
     @Override
     public Student addStudent(String studentId, Student student) {
         //do the actual implementation here:
-
-        Student prevStudent = studentList.put(studentId, student);
+        Student prevStudent = students.put(studentId, student);
         return prevStudent;
     }
 
@@ -23,12 +22,13 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public Student ViewStudent(String StudentId) {
-        return null;
+    public Student getStudent(String StudentId) {
+        return students.get(StudentId);
     }
 
     @Override
     public List<Student> getAllStudents() {
-        return null;
+        List<Student> x = new ArrayList<>(students.values()); //because we declared students as HashMap
+       return x;
     }
 }

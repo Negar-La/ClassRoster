@@ -12,12 +12,19 @@ import java.util.List;
 public class ClassRosterController {
 
 
-    private UserIO io = new UserIOConsoleImpl(); //Step 1: Menu System-----create an object from userIO to raed and accept different data types - access to all public members of userIO
-    //At firts I don't have the view yet, which uses an object from io
+    // private UserIO io = new UserIOConsoleImpl();         //Step 1: Menu System-----create an object from userIO to raed and accept different data types - access to all public members of userIO
+    //At firts I don't have the view yet, which uses an object from io, but at the end, there is no More Usage for io in Controller.
 
-    private ClassRosterView view = new ClassRosterView(); //after moving menu function to view, we initialize view
+    //private ClassRosterView view = new ClassRosterView(); //after moving menu function to view, we initialize view
+    //1- Remove the hard-coded reference
+    //private ClassRosterDao dao = new ClassRosterDaoFileImpl();
 
-    private ClassRosterDao dao = new ClassRosterDaoFileImpl();
+    private ClassRosterView view;           //2-using the constructor to initialize view and dao
+    private ClassRosterDao dao;
+    public ClassRosterController(ClassRosterView view, ClassRosterDao dao){
+        this.view = view;
+        this.dao = dao;
+    }
     public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
@@ -51,17 +58,20 @@ public class ClassRosterController {
                     viewStudent();
                     break;
                 case 4:
-                    io.print("REMOVE STUDENT");
+//                    io.print("REMOVE STUDENT");
+                    removeStudent();
                     break;
                 case 5:
                     keepGoing = false;
                     break;
                 default:
-                    io.print("UNKNOWN COMMAND");
+//                    io.print("UNKNOWN COMMAND");          //we cannot use io for the controller!
+                    unknownCommand();
             }
 
         }
-        io.print("GOOD BYE");
+//        io.print("GOOD BYE");
+        exitMessage();
     }
 
 
@@ -87,5 +97,20 @@ public class ClassRosterController {
         String studentId = view.getStudentIdChoice();  //get id from view
         Student student = dao.getStudent(studentId);   //based on this id, retrieve the student from dao
         view.displayStudent(student);                  //at the end, display student info
+    }
+
+    private void removeStudent() {
+        view.displayRemoveStudentBanner();
+        String studentId = view.getStudentIdChoice();
+        Student removedStudent = dao.removeStudent(studentId);
+        view.displayRemoveResult(removedStudent);
+    }
+
+    private void unknownCommand() {
+        view.displayUnknownCommandBanner();
+    }
+
+    private void exitMessage() {
+        view.displayExitBanner();
     }
 }

@@ -7,6 +7,8 @@ import cm.sg.ClassRoster.ui.ClassRosterView;
 import cm.sg.ClassRoster.ui.UserIO;
 import cm.sg.ClassRoster.ui.UserIOConsoleImpl;
 
+import java.util.List;
+
 public class ClassRosterController {
 
 
@@ -37,11 +39,12 @@ public class ClassRosterController {
 
             switch (menuSelection) {
                 case 1:
-                    io.print("LIST STUDENTS");
+//                    io.print("LIST STUDENTS");
+                    listStudents();
                     break;
                 case 2:
 //                    io.print("CREATE STUDENT");
-                    createStudent();
+                    createStudent();   //make a call to createStudent in the run method
                     break;
                 case 3:
                     io.print("VIEW STUDENT");
@@ -64,8 +67,19 @@ public class ClassRosterController {
     public void createStudent(){
         view.displayCreateStudentBanner();
         Student newStudent = view.getNewStudentInfo();
-        dao.addStudent(newStudent.getStudentId(), newStudent);
+        dao.addStudent(newStudent.getStudentId(), newStudent); //the DAO stores the newly created Student object for us.
         view.displayCreateSuccessBanner();
     }
+
+    private void listStudents() {
+        view.displayDisplayAllBanner();
+        List<Student> studentList = dao.getAllStudents();
+        view.displayStudentList(studentList);
+    }
+    /*
+    or you can just add one line to run(): view.displayStudentList(dao.getAllStudents());
+    dao method getAllStudents returns a List of Students which we need it as argument in view method displayStudentList.
+    Then view.displayStudentList(studentList) loops through the list and prints each student's info.
+     */
 
 }

@@ -14,7 +14,7 @@ public interface ClassRosterDao {
 
     Student removeStudent(String StudentId);
 
-    Student ViewStudent(String StudentId);
+    Student getStudent(String StudentId);
 
     List<Student> getAllStudents();
 }

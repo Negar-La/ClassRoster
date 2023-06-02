@@ -47,7 +47,8 @@ public class ClassRosterController {
                     createStudent();   //make a call to createStudent in the run method
                     break;
                 case 3:
-                    io.print("VIEW STUDENT");
+//                    io.print("VIEW STUDENT");
+                    viewStudent();
                     break;
                 case 4:
                     io.print("REMOVE STUDENT");
@@ -64,7 +65,7 @@ public class ClassRosterController {
     }
 
 
-    public void createStudent(){
+    private void createStudent(){           // private utility function to handle retrieval from different classes
         view.displayCreateStudentBanner();
         Student newStudent = view.getNewStudentInfo();
         dao.addStudent(newStudent.getStudentId(), newStudent); //the DAO stores the newly created Student object for us.
@@ -81,5 +82,10 @@ public class ClassRosterController {
     dao method getAllStudents returns a List of Students which we need it as argument in view method displayStudentList.
     Then view.displayStudentList(studentList) loops through the list and prints each student's info.
      */
-
+    private void viewStudent() {
+        view.displayDisplayStudentBanner();
+        String studentId = view.getStudentIdChoice();  //get id from view
+        Student student = dao.getStudent(studentId);   //based on this id, retrieve the student from dao
+        view.displayStudent(student);                  //at the end, display student info
+    }
 }

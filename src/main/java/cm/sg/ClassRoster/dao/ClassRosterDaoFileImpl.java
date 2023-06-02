@@ -12,7 +12,6 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     @Override
     public Student addStudent(String studentId, Student student) {
         //do the actual implementation here:
-
         Student prevStudent = students.put(studentId, student);
         return prevStudent;
     }
@@ -23,8 +22,8 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public Student ViewStudent(String StudentId) {
-        return null;
+    public Student getStudent(String StudentId) {
+        return students.get(StudentId);
     }
 
     @Override

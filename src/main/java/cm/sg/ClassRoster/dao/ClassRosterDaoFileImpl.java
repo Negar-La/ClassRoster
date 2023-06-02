@@ -18,7 +18,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
 
     @Override
     public Student removeStudent(String StudentId) {
-        return null;
+        return students.remove(StudentId);
     }
 
     @Override

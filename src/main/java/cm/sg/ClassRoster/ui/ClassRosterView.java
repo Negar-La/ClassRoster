@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassRosterView {
-    private UserIO io = new UserIOConsoleImpl();
+    //private UserIO io = new UserIOConsoleImpl();     //1-Remove the hard-coded reference to UserIO in the view.
+    private UserIO io;
+    public ClassRosterView(UserIO io){                  //2-using the constructor to initialize io
+        this.io = io;
+    }
 
           public int printMenuAndGetSelection() {
               io.print("Main Menu");
@@ -75,5 +79,26 @@ public class ClassRosterView {
             io.print("No such student.");
         }
         io.readString("Please hit enter to continue.");
+    }
+
+    public void displayRemoveStudentBanner () {
+        io.print("=== Remove Student ===");
+    }
+
+    public void displayRemoveResult(Student studentRecord) {
+        if(studentRecord != null){
+            io.print("Student successfully removed.");
+        }else{
+            io.print("No such student.");
+        }
+        io.readString("Please hit enter to continue.");
+    }
+
+    public void displayExitBanner() {
+        io.print("Good Bye!!!");
+    }
+
+    public void displayUnknownCommandBanner() {
+        io.print("Unknown Command!!!");
     }
 }

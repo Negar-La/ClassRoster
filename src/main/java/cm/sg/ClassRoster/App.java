@@ -2,13 +2,14 @@ package cm.sg.ClassRoster;
 
 import cm.sg.ClassRoster.controller.ClassRosterController;
 import cm.sg.ClassRoster.dao.ClassRosterDao;
+import cm.sg.ClassRoster.dao.ClassRosterDaoException;
 import cm.sg.ClassRoster.dao.ClassRosterDaoFileImpl;
 import cm.sg.ClassRoster.ui.ClassRosterView;
 import cm.sg.ClassRoster.ui.UserIO;
 import cm.sg.ClassRoster.ui.UserIOConsoleImpl;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassRosterDaoException {
        // ClassRosterController controller = new ClassRosterController();
             // after Dependency Injection in controller and view, we need to fix the app. we cannot use controller default constructor any more, Controller should take view and dao.
         UserIO myIO = new UserIOConsoleImpl();

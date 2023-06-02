@@ -1,5 +1,8 @@
 package cm.sg.ClassRoster.controller;
 
+import cm.sg.ClassRoster.dao.ClassRosterDao;
+import cm.sg.ClassRoster.dao.ClassRosterDaoFileImpl;
+import cm.sg.ClassRoster.dto.Student;
 import cm.sg.ClassRoster.ui.ClassRosterView;
 import cm.sg.ClassRoster.ui.UserIO;
 import cm.sg.ClassRoster.ui.UserIOConsoleImpl;
@@ -11,13 +14,15 @@ public class ClassRosterController {
     //At firts I don't have the view yet, which uses an object from io
 
     private ClassRosterView view = new ClassRosterView(); //after moving menu function to view, we initialize view
+
+    private ClassRosterDao dao = new ClassRosterDaoFileImpl();
     public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
         while (keepGoing) {
             menuSelection = view.printMenuAndGetSelection();
 
-            /*
+            /*                         Moved to View.
             io.print("Main Menu");
             io.print("1. List Student IDs");
             io.print("2. Create New Student");
@@ -35,7 +40,8 @@ public class ClassRosterController {
                     io.print("LIST STUDENTS");
                     break;
                 case 2:
-                    io.print("CREATE STUDENT");
+//                    io.print("CREATE STUDENT");
+                    createStudent();
                     break;
                 case 3:
                     io.print("VIEW STUDENT");
@@ -55,6 +61,11 @@ public class ClassRosterController {
     }
 
 
-
+    public void createStudent(){
+        view.displayCreateStudentBanner();
+        Student newStudent = view.getNewStudentInfo();
+        dao.addStudent(newStudent.getStudentId(), newStudent);
+        view.displayCreateSuccessBanner();
+    }
 
 }

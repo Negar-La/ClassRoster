@@ -21,7 +21,8 @@ public class ClassRosterView {
               io.print("5. Exit");
 
              return io.readInt("Please select from the"
-                      + " above choices.", 1, 5); //if we remove min and max, then the default case in switch would happen.
+                      + " above choices."); //if we remove min and max, then the default case in switch would happen when entering an integer number not between 1-5  = Unknown Command!!!
+              //if we enter letter, double, space, empty === 'Input error. Please try again.' which comes from  io.readInt
           }
 
     public Student getNewStudentInfo() {

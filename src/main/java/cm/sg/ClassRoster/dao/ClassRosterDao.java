@@ -10,11 +10,11 @@ public interface ClassRosterDao {
     //all methods by default are abstract in interface.
 
 
-    Student addStudent(String StudentId, Student student) throws ClassRosterDaoException;
+    Student addStudent(String StudentId, Student student) throws ClassRosterPersistenceException;
 
-    Student removeStudent(String StudentId) throws ClassRosterDaoException;
+    Student removeStudent(String StudentId) throws ClassRosterPersistenceException;
 
-    Student getStudent(String StudentId) throws ClassRosterDaoException;
+    Student getStudent(String StudentId) throws ClassRosterPersistenceException;
 
-    List<Student> getAllStudents() throws ClassRosterDaoException;
+    List<Student> getAllStudents() throws ClassRosterPersistenceException;
 }

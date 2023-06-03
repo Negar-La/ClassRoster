@@ -3,6 +3,9 @@ package cm.sg.ClassRoster.controller;
 import cm.sg.ClassRoster.dao.ClassRosterDao;
 import cm.sg.ClassRoster.dao.ClassRosterPersistenceException;
 import cm.sg.ClassRoster.dto.Student;
+import cm.sg.ClassRoster.service.ClassRosterDataValidationException;
+import cm.sg.ClassRoster.service.ClassRosterDuplicateIdException;
+import cm.sg.ClassRoster.service.ClassRosterServiceLayer;
 import cm.sg.ClassRoster.ui.ClassRosterView;
 
 import java.util.List;
@@ -18,10 +21,18 @@ public class ClassRosterController {
     //private ClassRosterDao dao = new ClassRosterDaoFileImpl();
 
     private ClassRosterView view;           //2-using the constructor to initialize view and dao
-    private ClassRosterDao dao;
+    //private ClassRosterDao dao;
+    //after adding service layer, we replace dao with service.
+    private ClassRosterServiceLayer service;
+    /*
     public ClassRosterController(ClassRosterView view, ClassRosterDao dao){
         this.view = view;
         this.dao = dao;
+    }
+     */
+    public ClassRosterController(ClassRosterView view, ClassRosterServiceLayer service){   //modify the constructor
+        this.view = view;
+        this.service = service;
     }
     public void run() throws ClassRosterPersistenceException {
         boolean keepGoing = true;
@@ -77,16 +88,34 @@ public class ClassRosterController {
     }
 
 
+    /*
     private void createStudent() throws ClassRosterPersistenceException {           // private utility function to handle retrieval from different classes
         view.displayCreateStudentBanner();
         Student newStudent = view.getNewStudentInfo();
         dao.addStudent(newStudent.getStudentId(), newStudent); //the DAO stores the newly created Student object for us.
         view.displayCreateSuccessBanner();
     }
+     */
+    private void createStudent() throws ClassRosterPersistenceException {  //Replace Calls to DAO Methods With Calls to Service Layer Method
+        view.displayCreateStudentBanner();
+        boolean hasErrors = false;
+        do {
+            Student currentStudent = view.getNewStudentInfo();
+            try {
+                service.createStudent(currentStudent);
+                view.displayCreateSuccessBanner();
+                hasErrors = false;
+            } catch (ClassRosterDuplicateIdException | ClassRosterDataValidationException e) { //List all the exception types to be handled in the catch block separated by the bitwise OR ( | ) operator followed by a single identifier
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
+    }
 
     private void listStudents() throws ClassRosterPersistenceException {
         view.displayDisplayAllBanner();
-        List<Student> studentList = dao.getAllStudents();
+        //List<Student> studentList = dao.getAllStudents();
+        List<Student> studentList = service.getAllStudents();  //Replace Calls to DAO Methods With Calls to Service Layer Method
         view.displayStudentList(studentList);
     }
     /*
@@ -97,14 +126,16 @@ public class ClassRosterController {
     private void viewStudent() throws ClassRosterPersistenceException {
         view.displayDisplayStudentBanner();
         String studentId = view.getStudentIdChoice();  //get id from view
-        Student student = dao.getStudent(studentId);   //based on this id, retrieve the student from dao
+        //Student student = dao.getStudent(studentId);   //based on this id, retrieve the student from dao
+        Student student = service.getStudent(studentId); //Replace Calls to DAO Methods With Calls to Service Layer Method
         view.displayStudent(student);                  //at the end, display student info
     }
 
     private void removeStudent() throws ClassRosterPersistenceException {
         view.displayRemoveStudentBanner();
         String studentId = view.getStudentIdChoice();
-        Student removedStudent = dao.removeStudent(studentId);
+        //Student removedStudent = dao.removeStudent(studentId);
+        Student removedStudent = service.removeStudent(studentId); //Replace Calls to DAO Methods With Calls to Service Layer Method
         view.displayRemoveResult(removedStudent);
     }
 

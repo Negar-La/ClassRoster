@@ -13,7 +13,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
 
 
     @Override
-    public Student addStudent(String studentId, Student student) throws ClassRosterDaoException {
+    public Student addStudent(String studentId, Student student) throws ClassRosterPersistenceException {
         //do the actual implementation here:
         /*
         Student prevStudent = students.put(studentId, student);
@@ -27,7 +27,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public Student removeStudent(String StudentId) throws ClassRosterDaoException {
+    public Student removeStudent(String StudentId) throws ClassRosterPersistenceException {
         loadRoster();
         Student removedStudent = students.remove(StudentId);
         writeRoster();
@@ -35,13 +35,13 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public Student getStudent(String StudentId) throws ClassRosterDaoException {
+    public Student getStudent(String StudentId) throws ClassRosterPersistenceException {
             loadRoster(); //adding this line to read from the file
         return students.get(StudentId);
     }
 
     @Override
-    public List<Student> getAllStudents() throws ClassRosterDaoException {
+    public List<Student> getAllStudents() throws ClassRosterPersistenceException {
             loadRoster();  //adding this line to read from the file
         List<Student> x = new ArrayList<>(students.values()); //because we declared students as HashMap
        return x;
@@ -58,7 +58,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
         return studentFromFile;
     }
 
-    private void loadRoster() throws ClassRosterDaoException {
+    private void loadRoster() throws ClassRosterPersistenceException {
         Scanner scanner;
 
         try {
@@ -67,7 +67,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
                     new BufferedReader(
                             new FileReader(ROSTER_FILE)));
         } catch (FileNotFoundException e) {
-            throw new ClassRosterDaoException(
+            throw new ClassRosterPersistenceException(
                     "-_- Could not load roster data into memory.", e);
         }
         String currentLine;
@@ -102,13 +102,13 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
 
-    private void writeRoster() throws ClassRosterDaoException {
+    private void writeRoster() throws ClassRosterPersistenceException {
         PrintWriter out;
 
         try {
             out = new PrintWriter(new FileWriter(ROSTER_FILE));
         } catch (IOException e) {
-            throw new ClassRosterDaoException(
+            throw new ClassRosterPersistenceException(
                     "Could not save student data.", e);
         }
         String studentAsText;

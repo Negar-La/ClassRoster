@@ -1,12 +1,9 @@
 package cm.sg.ClassRoster.controller;
 
 import cm.sg.ClassRoster.dao.ClassRosterDao;
-import cm.sg.ClassRoster.dao.ClassRosterDaoException;
-import cm.sg.ClassRoster.dao.ClassRosterDaoFileImpl;
+import cm.sg.ClassRoster.dao.ClassRosterPersistenceException;
 import cm.sg.ClassRoster.dto.Student;
 import cm.sg.ClassRoster.ui.ClassRosterView;
-import cm.sg.ClassRoster.ui.UserIO;
-import cm.sg.ClassRoster.ui.UserIOConsoleImpl;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class ClassRosterController {
         this.view = view;
         this.dao = dao;
     }
-    public void run() throws ClassRosterDaoException {
+    public void run() throws ClassRosterPersistenceException {
         boolean keepGoing = true;
         int menuSelection = 0;
         try {               //adding try-catch block at the last step after marshal-unmarshal
@@ -74,20 +71,20 @@ public class ClassRosterController {
             }
 //        io.print("GOOD BYE");
             exitMessage();
-        } catch (ClassRosterDaoException e){
+        } catch (ClassRosterPersistenceException e){
             view.displayErrorMessage(e.getMessage());
         }
     }
 
 
-    private void createStudent() throws ClassRosterDaoException {           // private utility function to handle retrieval from different classes
+    private void createStudent() throws ClassRosterPersistenceException {           // private utility function to handle retrieval from different classes
         view.displayCreateStudentBanner();
         Student newStudent = view.getNewStudentInfo();
         dao.addStudent(newStudent.getStudentId(), newStudent); //the DAO stores the newly created Student object for us.
         view.displayCreateSuccessBanner();
     }
 
-    private void listStudents() throws ClassRosterDaoException {
+    private void listStudents() throws ClassRosterPersistenceException {
         view.displayDisplayAllBanner();
         List<Student> studentList = dao.getAllStudents();
         view.displayStudentList(studentList);
@@ -97,14 +94,14 @@ public class ClassRosterController {
     dao method getAllStudents returns a List of Students which we need it as argument in view method displayStudentList.
     Then view.displayStudentList(studentList) loops through the list and prints each student's info.
      */
-    private void viewStudent() throws ClassRosterDaoException {
+    private void viewStudent() throws ClassRosterPersistenceException {
         view.displayDisplayStudentBanner();
         String studentId = view.getStudentIdChoice();  //get id from view
         Student student = dao.getStudent(studentId);   //based on this id, retrieve the student from dao
         view.displayStudent(student);                  //at the end, display student info
     }
 
-    private void removeStudent() throws ClassRosterDaoException {
+    private void removeStudent() throws ClassRosterPersistenceException {
         view.displayRemoveStudentBanner();
         String studentId = view.getStudentIdChoice();
         Student removedStudent = dao.removeStudent(studentId);

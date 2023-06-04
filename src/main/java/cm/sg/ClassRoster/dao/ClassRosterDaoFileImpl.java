@@ -8,7 +8,15 @@ import java.util.*;
 public class ClassRosterDaoFileImpl implements ClassRosterDao{
     private Map<String, Student> students = new HashMap<>();
 
-    public static final String ROSTER_FILE = "roster.txt";  //File Persistence
+    //public static final String ROSTER_FILE = "roster.txt";  //File Persistence (declaration and assignment)----
+    //after starting Dao testing, we remove the keyword static from ROSTER-FILE and then using 2 constructors
+    private final String ROSTER_FILE; //it exists as a declaration, not a declaration and assignment
+    public ClassRosterDaoFileImpl(){  // The first, no-args constructor is providing the earlier default behavior = production data
+        ROSTER_FILE = "roster.txt";
+    }
+    public ClassRosterDaoFileImpl(String rosterTextFile){ // the second overloaded constructor creates an instances that utilize another file, perfect for test setup
+        ROSTER_FILE = rosterTextFile;
+    }
     public static final String DELIMITER = "::";
 
 
